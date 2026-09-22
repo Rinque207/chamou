@@ -1,0 +1,435 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(37, 99, 235, 0.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at top right,
+            rgba(15, 23, 42, 0.08),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #F8FAFC 0%,
+            #EFF6FF 45%,
+            #F8FAFC 100%
+        );
+
+    color: #0F172A;
+
+    min-height: 100vh;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.conteudo-principal {
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 120px 40px 80px 40px;
+}
+
+
+/* APRESENTAÇÃO */
+
+.apresentacao {
+    max-width: 750px;
+
+    margin-bottom: 50px;
+}
+
+
+.apresentacao .tag {
+    display: inline-block;
+
+    background-color: #DBEAFE;
+
+    color: #2563EB;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    margin-bottom: 18px;
+}
+
+
+.apresentacao h1 {
+    font-size: 42px;
+
+    color: #0F172A;
+
+    margin-bottom: 15px;
+
+    letter-spacing: -1px;
+}
+
+
+.apresentacao p {
+    font-size: 18px;
+
+    color: #64748B;
+
+    line-height: 1.6;
+}
+
+
+/* TÍTULOS DAS SEÇÕES */
+
+.conteudo-principal > h1 {
+    color: #0F172A;
+
+    font-size: 30px;
+
+    margin-top: 55px;
+
+    margin-bottom: 10px;
+}
+
+
+.conteudo-principal > p {
+    color: #64748B;
+
+    font-size: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+/* BARRA FIXA */
+
+.barra_fixa_pagina_principal {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 72px;
+
+    background-color: #0F172A;
+
+    border-bottom: 1px solid #1E293B;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px;
+
+    z-index: 1000;
+}
+
+
+/* LOGO */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+}
+
+.logo img {
+    width: 42px;
+    height: 42px;
+
+    object-fit: contain;
+}
+
+.logo span {
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: #FFFFFF;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* MENU */
+
+.menu {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.menu a {
+    text-decoration: none;
+
+    color: #CBD5E1;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    transition: all 0.2s ease;
+}
+
+
+/* HOVER */
+
+.menu a:hover {
+    color: #FFFFFF;
+
+    background-color: #1E293B;
+}
+
+
+/* BOTÃO ENTRAR */
+
+.menu a:last-child {
+    background-color: #2563EB;
+
+    color: #FFFFFF;
+
+    font-weight: 600;
+
+    margin-left: 8px;
+}
+
+.menu a:last-child:hover {
+    background-color: #1D4ED8;
+}
+
+/*-------------------------------------------------------------------------------------------------------------*/
+
+
+h1 {
+    margin-bottom: 25px;
+}
+
+/* Barra onde ficam os serviços */
+.lista-servicos {
+    display: flex;
+    gap: 20px;
+
+    overflow-x: auto;
+
+    padding: 10px 5px 20px 5px;
+
+    scroll-behavior: smooth;
+}
+
+/* Cada cartão de serviço */
+.servico {
+    min-width: 250px;
+    width: 250px;
+
+    background-color: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    flex-shrink: 0;
+}
+
+/* Ícone */
+.icone {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+/*logo empresa*/
+.logoempresa {
+    margin-left: auto;
+    margin-right: auto;
+    width: 130px;
+    height: 130px;
+    display: block;
+    object-fit: contain;
+
+}
+
+/* Nome do serviço */
+.servico h2 {
+    margin-bottom: 10px;
+}
+
+/* Descrição */
+.servico p {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+
+.lista-empresas {
+    display: flex;
+    gap: 20px;
+
+    overflow-x: auto;
+
+    padding: 10px 5px 20px 5px;
+
+    scroll-behavior: smooth;
+}
+
+.empresa {
+    min-width: 250px;
+    width: 250px;
+
+    background-color: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    flex-shrink: 0;
+}
+
+/* RODAPÉ */
+
+.rodape {
+    background-color: #0F172A;
+
+    color: #CBD5E1;
+
+    border-radius: 15px;
+
+    margin-top: 80px;
+}
+
+
+.rodape-conteudo {
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 60px 40px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 80px;
+}
+
+
+.rodape-marca {
+    max-width: 450px;
+}
+
+
+.rodape-marca h2 {
+    color: #FFFFFF;
+
+    font-size: 28px;
+
+    margin-bottom: 15px;
+}
+
+
+.rodape-marca p {
+    line-height: 1.7;
+
+    color: #94A3B8;
+}
+
+
+.rodape-equipe {
+    min-width: 350px;
+}
+
+
+.rodape-equipe h3 {
+    color: #FFFFFF;
+
+    margin-bottom: 20px;
+
+    font-size: 18px;
+}
+
+
+.linkedin-lista {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+.linkedin-lista a {
+    text-decoration: none;
+
+    color: #CBD5E1;
+
+    background-color: #1E293B;
+
+    padding: 14px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    transition: 0.2s;
+}
+
+
+.linkedin-lista a:hover {
+    background-color: #334155;
+
+    color: #FFFFFF;
+
+    transform: translateY(-2px);
+}
+
+
+.linkedin-lista span {
+    color: #60A5FA;
+
+    font-size: 13px;
+}
+
+
+.rodape-final {
+    border-top: 1px solid #1E293B;
+
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 20px 40px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #64748B;
+
+    font-size: 13px;
+}
