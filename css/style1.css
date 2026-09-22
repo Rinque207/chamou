@@ -70,13 +70,17 @@ body {
 
 
 .apresentacao h1 {
-    font-size: 42px;
+    font-size: 44px;
 
     color: #0F172A;
 
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 
-    letter-spacing: -1px;
+    font-weight: 750;
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
 }
 
 
@@ -86,6 +90,61 @@ body {
     color: #64748B;
 
     line-height: 1.6;
+}
+
+.subtitulo-pagina {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: #2563EB;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+.titulo-secao {
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+.titulo-secao > span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #2563EB;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.3px;
+}
+
+.titulo-secao h2 {
+    margin-bottom: 8px;
+
+    color: #0F172A;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    letter-spacing: -0.8px;
+}
+
+.titulo-secao p {
+    margin: 0;
+
+    color: #64748B;
+
+    font-size: 16px;
+
+    line-height: 1.5;
 }
 
 
@@ -219,9 +278,6 @@ body {
 /*-------------------------------------------------------------------------------------------------------------*/
 
 
-h1 {
-    margin-bottom: 25px;
-}
 
 /* Barra onde ficam os serviços */
 .lista-servicos {
@@ -230,18 +286,35 @@ h1 {
 
     overflow-x: auto;
 
-    padding: 10px 5px 20px 5px;
+    padding: 10px 20px 20px 20px;
 
     scroll-behavior: smooth;
+
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 transparent;
+
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 30px,
+        black calc(100% - 30px),
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 30px,
+        black calc(100% - 30px),
+        transparent 100%
+    );
 }
 
-/* Cada cartão de serviço */
 .servico {
     min-width: 250px;
     width: 250px;
 
     background-color: white;
-
     padding: 20px;
 
     border-radius: 12px;
@@ -249,7 +322,15 @@ h1 {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
     flex-shrink: 0;
+
+    transition: 0.2s ease;
 }
+
+.servico:hover {
+    background-color: lightgray;
+    transform: translateY(-2px);
+}
+
 
 /* Ícone */
 .icone {
@@ -287,9 +368,28 @@ h1 {
 
     overflow-x: auto;
 
-    padding: 10px 5px 20px 5px;
+    padding: 10px 20px 20px 20px;
 
     scroll-behavior: smooth;
+
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 transparent;
+
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 30px,
+        black calc(100% - 30px),
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 30px,
+        black calc(100% - 30px),
+        transparent 100%
+    );
 }
 
 .empresa {
@@ -305,6 +405,11 @@ h1 {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
     flex-shrink: 0;
+}
+
+.empresa:hover {
+    background-color: lightgray;
+    transform: translateY(-2px);
 }
 
 /* RODAPÉ */
