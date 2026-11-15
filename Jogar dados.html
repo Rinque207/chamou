@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jogar dados</title>
+<style>
+:root{
+  --bg:#1f3a34; --felt:#2a4a42; --ink:#f3ecd8; --muted:#a9bdb5;
+  --die:#e8dcc0; --die-ink:#1f2a27; --accent:#e9b44c;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#1f3a34;--felt:#2a4a42;--ink:#f3ecd8;--muted:#a9bdb5;--die:#e8dcc0;--die-ink:#1f2a27;--accent:#e9b44c}
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Trebuchet MS","Gill Sans",Verdana,sans-serif;
+  display:flex;align-items:center;justify-content:center;
+}
+main{
+  width:min(440px,100%);
+  margin:16px;
+  background:var(--felt);
+  border-radius:28px;
+  padding:28px 22px 24px;
+  text-align:center;
+}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:1.6rem;margin:0 0 20px}
+.choices{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
+.choices button{
+  appearance:none;border:2px solid var(--muted);background:transparent;color:var(--ink);
+  font:inherit;font-weight:700;padding:9px 14px;border-radius:999px;cursor:pointer;
+  min-width:56px;transition:background .15s,color .15s,border-color .15s;
+}
+.choices button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--die-ink)}
+.choices button:focus-visible,.roll:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.stage{height:220px;display:flex;align-items:center;justify-content:center;perspective:600px}
+.die{width:180px;height:180px;display:block}
+.die .shape{fill:var(--die);stroke:var(--die-ink);stroke-width:3;stroke-linejoin:round}
+.die .edge{fill:none;stroke:var(--die-ink);stroke-width:1.5;stroke-linejoin:round;opacity:.35}
+.die text{
+  font-family:Georgia,serif;font-weight:700;fill:var(--die-ink);
+  text-anchor:middle;dominant-baseline:central;font-size:64px;
+}
+.die.rolling{animation:tumble .7s cubic-bezier(.3,.7,.4,1)}
+@keyframes tumble{
+  0%{transform:rotate(0) scale(1)}
+  30%{transform:rotate(200deg) scale(.82)}
+  70%{transform:rotate(520deg) scale(1.08)}
+  100%{transform:rotate(720deg) scale(1)}
+}
+.roll{
+  appearance:none;border:0;background:var(--accent);color:var(--die-ink);
+  font:inherit;font-weight:700;font-size:1.1rem;padding:14px 40px;border-radius:14px;cursor:pointer;margin-top:10px;
+}
+.roll:active{transform:translateY(1px)}
+.result{margin:16px 0 0;min-height:1.4em;color:var(--muted)}
+.history{margin:8px 0 0;min-height:1.4em;font-size:.9rem;color:var(--muted);overflow-wrap:anywhere}
+@media (prefers-reduced-motion: reduce){.die.rolling{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Jogar dado</h1>
+
+  <div class="choices" role="group" aria-label="Escolha o dado">
+    <button data-faces="5" aria-pressed="false">d5</button>
+    <button data-faces="6" aria-pressed="true">d6</button>
+    <button data-faces="8" aria-pressed="false">d8</button>
+    <button data-faces="12" aria-pressed="false">d12</button>
+    <button data-faces="20" aria-pressed="false">d20</button>
+  </div>
+
+  <div class="stage">
+    <svg class="die" id="die" viewBox="0 0 200 200" role="img" aria-label="Dado"></svg>
+  </div>
+
+  <button class="roll" id="roll">Jogar d6</button>
+  <p class="result" id="result" aria-live="polite">Toque em jogar.</p>
+  <p class="history" id="history"></p>
+</main>
+
+<script>
+const cx = 100, cy = 100;
+
+// Gera os pontos de um polígono regular
+function poly(n, r, rot){
+  const pts = [];
+  for(let i=0;i<n;i++){
+    const a = rot + i * 2*Math.PI/n;
+    pts.push([cx + r*Math.cos(a), cy + r*Math.sin(a)]);
+  }
+  return pts;
+}
+const fmt = pts => pts.map(p => p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+
+// Desenho de cada dado (forma + arestas internas)
+function drawing(faces){
+  const top = -Math.PI/2;
+  if(faces === 5){            // pentágono
+    const p = poly(5, 88, top), q = poly(5, 40, top + Math.PI/5*0);
+    return {
+      shape: `<polygon class="shape" points="${fmt(p)}"/>`,
+      edges: p.map((pt,i)=>`<line class="edge" x1="${pt[0]}" y1="${pt[1]}" x2="${q[i][0]}" y2="${q[i][1]}"/>`).join("")
+    };
+  }
+  if(faces === 6){            // cubo (quadrado arredondado)
+    return {shape:`<rect class="shape" x="22" y="22" width="156" height="156" rx="26"/>`, edges:""};
+  }
+  if(faces === 8){            // octaedro: losango visto de frente
+    const p = [[100,10],[178,100],[100,190],[22,100]];
+    return {
+      shape:`<polygon class="shape" points="${fmt(p)}"/>`,
+      edges:`<polygon class="edge" points="100,10 140,100 100,190 60,100"/><line class="edge" x1="22" y1="100" x2="178" y2="100"/>`
+    };
+  }
+  if(faces === 12){           // dodecaedro: pentágono grande com pentágono interno
+    const p = poly(5, 90, top), q = poly(5, 48, top + Math.PI);
+    return {
+      shape:`<polygon class="shape" points="${fmt(p)}"/>`,
+      edges:`<polygon class="edge" points="${fmt(q)}"/>` +
+            p.map((pt,i)=>{const t=q[(i+3)%5];return `<line class="edge" x1="${pt[0]}" y1="${pt[1]}" x2="${t[0]}" y2="${t[1]}"/>`}).join("")
+    };
+  }
+  // 20: icosaedro: hexágono com triângulo interno
+  const p = poly(6, 90, top), q = poly(3, 46, top);
+  return {
+    shape:`<polygon class="shape" points="${fmt(p)}"/>`,
+    edges:`<polygon class="edge" points="${fmt(q)}"/>` +
+          q.map((pt,i)=>{const a=p[i*2],b=p[(i*2+1)%6],c=p[(i*2+5)%6];return `<line class="edge" x1="${pt[0]}" y1="${pt[1]}" x2="${a[0]}" y2="${a[1]}"/><line class="edge" x1="${pt[0]}" y1="${pt[1]}" x2="${b[0]}" y2="${b[1]}"/><line class="edge" x1="${pt[0]}" y1="${pt[1]}" x2="${c[0]}" y2="${c[1]}"/>`}).join("")
+  };
+}
+
+const dieEl = document.getElementById("die");
+const rollBtn = document.getElementById("roll");
+const resultEl = document.getElementById("result");
+const historyEl = document.getElementById("history");
+const buttons = document.querySelectorAll(".choices button");
+let faces = 6, value = 6, rolls = [], busy = false;
+
+function render(){
+  const d = drawing(faces);
+  dieEl.innerHTML = d.shape + d.edges + `<text x="100" y="104">${value}</text>`;
+  dieEl.setAttribute("aria-label", `d${faces} mostrando ${value}`);
+  rollBtn.textContent = `Jogar d${faces}`;
+}
+
+buttons.forEach(b => b.addEventListener("click", () => {
+  if(busy) return;
+  faces = Number(b.dataset.faces);
+  value = faces;
+  rolls = [];
+  buttons.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  resultEl.textContent = "Toque em jogar.";
+  historyEl.textContent = "";
+  render();
+}));
+
+rollBtn.addEventListener("click", () => {
+  if(busy) return;
+  busy = true;
+  rollBtn.disabled = true;
+  dieEl.classList.remove("rolling");
+  void dieEl.getBoundingClientRect();
+  dieEl.classList.add("rolling");
+
+  // números rápidos durante a rolagem
+  const tick = setInterval(() => {
+    value = 1 + Math.floor(Math.random() * faces);
+    render();
+  }, 70);
+
+  setTimeout(() => {
+    clearInterval(tick);
+    // resultado final com sorteio criptograficamente seguro quando possível
+    const buf = new Uint32Array(1);
+    crypto.getRandomValues(buf);
+    value = 1 + (buf[0] % faces);
+    render();
+    rolls.unshift(value);
+    rolls = rolls.slice(0, 8);
+    resultEl.textContent = `Resultado no d${faces}: ${value}`;
+    historyEl.textContent = rolls.length > 1 ? "Anteriores: " + rolls.slice(1).join(", ") : "";
+    dieEl.classList.remove("rolling");
+    rollBtn.disabled = false;
+    busy = false;
+  }, 700);
+});
+
+render();
+</script>
+</body>
+</html>
